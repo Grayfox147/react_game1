@@ -44,3 +44,37 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+
+// 1. generate a random 4 digit number
+// this needs to be done using Use Effect() []
+// if the user wins or give up the number generates again
+
+// 2. check a number different digits
+// check every digit using a function
+// Iterate and check that every digit is different
+
+
+// show error messages
+
+// clear input after next try
+
+
+
+
+// compare a try with the secret
+
+// inputN = 1234 === SecretN 1547
+// 1 [0] === 1[0] === bull
+//  2[1] === 5[1] === nothing
+//  3[2] === 4[2] == nothing
+//  4[3] === 7[3]  Cow (number is correct but position wrong)
+
+// Read user input
+
+// Print the result with Bulls and Cows
+// print input inside a list
+
+// Show the winning message
+
+// restart the game
