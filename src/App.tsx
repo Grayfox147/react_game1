@@ -2,65 +2,144 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import { ErrorMessages } from './utils/utils';
 
-const randomNumber = () => Math.floor(Math.random() * 9000 + 1000).toString();
+const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+// sort random Math.randon - 0.5
+
+type TableObject = {
+  cows: number,
+  bulls: number,
+  input: string,
+};
 
 export const App = () => {
-  const[query, setQuery] = useState('');
-  const[inputError, setInputError] = useState('');
-  const[secretNumb, setSecretNumb] = useState('');
+  const [query, setQuery] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [secretNumber, setSecretNumber] = useState<string[]>([]);
+  const [winMessage, setWinMessage] = useState('');
 
   useEffect(() => {
-    setSecretNumb(randomNumber());
+    const baseGenerator = digits.sort(() => Math.random() - 0.5);
+    const generatedNumber = baseGenerator.slice(0, 4).join('').split('');
+    setSecretNumber(generatedNumber)
   }, []);
 
-  const handlerGoButton = () => {
-    if (query.length === 4) {
-      const userInput = query.toString().split('');
+  useEffect(() => {
+    setTimeout(() => {
+      setErrorMessage('')
+    }, 3000)
+  }, [errorMessage]);
 
-      if (userInput.every((digit) => typeof digit !== 'number')) {
-        setInputError(ErrorMessages.NOLETTERS);
-        return;
-      }
+  const attempts: TableObject[] = [];
 
-      if (userInput.length !== new Set(userInput).size) {
-        setInputError(ErrorMessages.NOREPETITIONS)
-        return;
-      } else {
-        // compare userInput === secretNumb
+  const handleComparisom = (secretNumb: string[], inputNumb: string[]) => {
+    let cows = 0;
+    let bulls = 0;
+    const secret = secretNumb;
+    const input = inputNumb;
+
+    const obj = {
+      cows: 0,
+      bulls: 0,
+      input: inputNumb.join(''),
+    }
+
+    if (secret.every((element, i) => element === input[i])) {
+      return setWinMessage('You win! congratulations!');
+    }
+
+    for (let i = 0; i < secret.length; i++) {
+      if (secret[i] !== input[i] && input.includes(secret[i])) {
+        cows += 1;
+        return obj.cows = cows;
+      } else if (secret[i] === input[i]) {
+        bulls += 1;
+        return obj.bulls = bulls;
       }
     }
 
-    return setInputError(ErrorMessages.NOTENOUGHDIGITS);
+    attempts.push(obj);
+
+    return { obj };
   };
+
+  const handlerGoButton = () => {
+    if (query.length < 4) {
+      return setErrorMessage(ErrorMessages.NOTENOUGHDIGITS);
+    }
+
+    const userInput = query.toString().split('');
+
+    if (userInput.every((digit) => typeof digit !== 'number')) {
+      setErrorMessage(ErrorMessages.NOLETTERS);
+      return;
+    }
+
+    if (userInput.length !== new Set(userInput).size) {
+      setErrorMessage(ErrorMessages.NOREPETITIONS)
+      return;
+    }
+
+    const table = handleComparisom(secretNumber, userInput);
+
+    return table;
+  }
 
   return (
     <div className="App">
-      <p>Instructions:</p>
-      <span>Every digit should be different</span>
-   <form onInput={(event) => {
-    event.preventDefault();
-   }} >
-    <input
-      type="text"
-      className='input'
-      value={query}
-      onChange={(event) => {
-        setQuery(event.target.value);
-      }}
-      maxLength={4}
-    />
-   </form>
-   <button
-    className='button'
-    onClick={handlerGoButton}
-  >
-    Go!
-  </button>
-   <button
-    className='button'
-  >
-    Give Up!
-  </button>
+      <h1>Bulls and Cows</h1>
+      <h2>Instructions</h2>
+      <p>1. Every digit should be different.</p>
+      <p>2. Only numbers, no letters.</p>
+      <p>3. the input must be 4 digits only.</p>
+      <form onInput={(event) => {
+        event.preventDefault();
+      }} >
+        <input
+          type="text"
+          className='input'
+          value={query}
+          onChange={(event) => {
+            setQuery(event.target.value);
+          }}
+          maxLength={4}
+        />
+        {errorMessage && (
+          <span className='error'>{errorMessage}</span>
+        )}
+      </form>
+      <button
+        className='button'
+        onClick={handlerGoButton}
+      >
+        Go!
+      </button>
+      <button
+        className='button'
+      >
+        Give Up!
+      </button>
+      <table>
+        <thead>
+          <th>Input</th>
+          <th>Bull</th>
+          <th>Cow</th>
+        </thead>
+        <tbody>
+          {attempts.map((attempt) => (
+            <tr>
+              <td>
+                {attempt.input}
+              </td>
+              <td>
+                {attempt.bulls}
+              </td>
+              <td>
+                {attempt.cows}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
