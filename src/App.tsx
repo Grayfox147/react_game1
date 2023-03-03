@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
+import { TableObject } from './Types/TableObject';
 import { ErrorMessages } from './utils/utils';
 
 const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 // sort random Math.randon - 0.5
 
-type TableObject = {
-  cows: number,
-  bulls: number,
-  input: string,
-};
 
 export const App = () => {
   const [query, setQuery] = useState('');
@@ -69,19 +65,18 @@ export const App = () => {
 
     const userInput = query.toString().split('');
 
-    if (userInput.every((digit) => typeof digit !== 'number')) {
-      setErrorMessage(ErrorMessages.NOLETTERS);
-      return;
+    if (userInput.every((digit) => typeof digit === 'number')) {
+      if (userInput.length !== new Set(userInput).size) {
+        setErrorMessage(ErrorMessages.NOREPETITIONS)
+        return;
+      }
+
+      handleComparisom(secretNumber, userInput);
+
+      setQuery('');
     }
-
-    if (userInput.length !== new Set(userInput).size) {
-      setErrorMessage(ErrorMessages.NOREPETITIONS)
-      return;
-    }
-
-    const table = handleComparisom(secretNumber, userInput);
-
-    return table;
+    setErrorMessage(ErrorMessages.NOLETTERS);
+    return;
   }
 
   return (
