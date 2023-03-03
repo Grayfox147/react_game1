@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import { TableObject } from './Types/TableObject';
-import { ErrorMessages } from './utils/utils';
-
-const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-// sort random Math.randon - 0.5
-
+import { digits, ErrorMessages } from './utils/utils';
 
 export const App = () => {
   const [query, setQuery] = useState('');
   const [secretNumber, setSecretNumber] = useState<string[]>([]);
   const [startAgain, setStartAgain] = useState(false);
+  const [attempts, setAttempts] = useState<TableObject[]>([]);
 
   useEffect(() => {
     const baseGenerator = digits.sort(() => Math.random() - 0.5);
@@ -18,22 +15,39 @@ export const App = () => {
     setSecretNumber(generatedNumber)
   }, [startAgain]);
 
-  const attempts: TableObject[] = [];
+  // const attempts:  = [];
 
-  const handleComparisom = (secretNumb: string[], inputNumb: string) => {
+  const handlerGoButton = () => {
+    if (query.length < 4) {
+      setQuery('');
+      return alert(ErrorMessages.NOTENOUGHDIGITS);
+    }
+
+    const userInput = query;
+
+    if (userInput.toLocaleLowerCase() !== userInput.toLocaleUpperCase()) {
+      setQuery('');
+      return alert(ErrorMessages.NOLETTERS);
+    }
+
+    handleComparisom(secretNumber, userInput);
+  }
+
+  const handleComparisom = (secretNumber: string[], userInput: string) => {
     let cows = 0;
     let bulls = 0;
-    const secret = secretNumb;
-    const input = inputNumb;
+    const secret = secretNumber;
+    const input = userInput;
 
     const obj = {
       cows: 0,
       bulls: 0,
-      input: inputNumb,
+      input: userInput,
     }
 
     if (secret.every((element, i) => element === input[i])) {
       setStartAgain((state) => !state);
+      setQuery('');
       return alert('You win! congratulations!');
     }
 
@@ -48,26 +62,10 @@ export const App = () => {
     }
 
     attempts.push(obj);
+    setQuery('');
 
     return { obj };
   };
-
-  const handlerGoButton = () => {
-    if (query.length < 4) {
-      return alert(ErrorMessages.NOTENOUGHDIGITS);
-    }
-
-    const userInput = query;
-
-    if (userInput.toLocaleLowerCase() !== userInput.toLocaleUpperCase()) {
-      alert(ErrorMessages.NOLETTERS);
-      return;
-    }
-
-      handleComparisom(secretNumber, userInput);
-
-      setQuery('');
-    }
 
   return (
     <div className="App">
@@ -102,28 +100,30 @@ export const App = () => {
         Give Up!
       </button>
       {attempts && (
-      <table>
-        <thead>
-          <th>Input</th>
-          <th>Bull</th>
-          <th>Cow</th>
-        </thead>
-        <tbody>
-          {attempts.map((attempt) => (
+        <table>
+          <thead>
             <tr>
-              <td>
-                {attempt.input}
-              </td>
-              <td>
-                {attempt.bulls}
-              </td>
-              <td>
-                {attempt.cows}
-              </td>
+              <th>Input</th>
+              <th>Bull</th>
+              <th>Cow</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {attempts.map((attempt) => (
+              <tr>
+                <td>
+                  {attempt.input}
+                </td>
+                <td>
+                  {attempt.bulls}
+                </td>
+                <td>
+                  {attempt.cows}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
     </div>
   );
