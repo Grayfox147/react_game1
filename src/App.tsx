@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import { TableObject } from './Types/TableObject';
-import { digits, ErrorMessages } from './utils/utils';
+import { digits, Message } from './utils/utils';
 
 export const App = () => {
   const [query, setQuery] = useState('');
@@ -20,14 +20,14 @@ export const App = () => {
   const handlerGoButton = () => {
     if (query.length < 4) {
       setQuery('');
-      return alert(ErrorMessages.NOTENOUGHDIGITS);
+      return alert(Message.NOTENOUGHDIGITS);
     }
 
     const userInput = query;
 
     if (userInput.toLocaleLowerCase() !== userInput.toLocaleUpperCase()) {
       setQuery('');
-      return alert(ErrorMessages.NOLETTERS);
+      return alert(Message.NOLETTERS);
     }
 
     handleComparisom(secretNumber, userInput);
@@ -48,7 +48,7 @@ export const App = () => {
     if (secret.every((element, i) => element === input[i])) {
       setStartAgain((state) => !state);
       setQuery('');
-      return alert('You win! congratulations!');
+      return alert(Message.WINMESSAGE);
     }
 
     for (let i = 0; i < secret.length; i++) {
