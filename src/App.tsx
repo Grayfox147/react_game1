@@ -51,6 +51,16 @@ export const App = () => {
     return attempts;
   };
 
+  function testDigits(n: string) {
+    for (let i = 0; i < n.length; i++) {
+      if (n[i] === n[i + 1]) {
+        return false;
+      }
+
+      return true;
+    }
+  }
+
   const handlerGoButton = () => {
     if (query.length < 4) {
       setQuery('');
@@ -62,6 +72,11 @@ export const App = () => {
     if (userInput.toLocaleLowerCase() !== userInput.toLocaleUpperCase()) {
       setQuery('');
       return alert(Message.NOLETTERS);
+    }
+
+    if (!testDigits(query)) {
+      setQuery('');
+      return alert(Message.NOREPETITIONS);
     }
 
     handleComparisom(secretNumber, userInput);
