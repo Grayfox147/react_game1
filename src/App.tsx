@@ -7,7 +7,6 @@ export const App = () => {
   const [query, setQuery] = useState('');
   const [secretNumber, setSecretNumber] = useState<string[]>([]);
   const [startAgain, setStartAgain] = useState(false);
-  const [attempts, setAttempts] = useState<TableObject[]>([]);
 
   useEffect(() => {
     const baseGenerator = digits.sort(() => Math.random() - 0.5);
@@ -15,7 +14,42 @@ export const App = () => {
     setSecretNumber(generatedNumber)
   }, [startAgain]);
 
-  // const attempts:  = [];
+  const attempts: TableObject[] = [];
+
+  const handleComparisom = (secretNumber: string[], userInput: string) => {
+    let cows = 0;
+    let bulls = 0;
+    const secret = secretNumber;
+    const input = userInput.split('');
+
+    let obj = {
+      cows: 0,
+      bulls: 0,
+      input: userInput,
+    }
+
+    if (secret.every((element, i) => element === input[i])) {
+      setStartAgain((state) => !state);
+      setQuery('');
+      return alert(Message.WINMESSAGE);
+    }
+
+    for (let i = 0; i < secret.length; i++) {
+      if (secret[i] !== input[i] && input.includes(secret[i])) {
+        cows++;
+        obj.cows = cows;
+      } else if (secret[i] === input[i]) {
+        bulls++;
+        obj.bulls = bulls;
+      }
+
+      return (obj);
+    }
+
+    attempts.push(obj);
+
+    return attempts;
+  };
 
   const handlerGoButton = () => {
     if (query.length < 4) {
@@ -31,41 +65,8 @@ export const App = () => {
     }
 
     handleComparisom(secretNumber, userInput);
-  }
-
-  const handleComparisom = (secretNumber: string[], userInput: string) => {
-    let cows = 0;
-    let bulls = 0;
-    const secret = secretNumber;
-    const input = userInput;
-
-    const obj = {
-      cows: 0,
-      bulls: 0,
-      input: userInput,
-    }
-
-    if (secret.every((element, i) => element === input[i])) {
-      setStartAgain((state) => !state);
-      setQuery('');
-      return alert(Message.WINMESSAGE);
-    }
-
-    for (let i = 0; i < secret.length; i++) {
-      if (secret[i] !== input[i] && input.includes(secret[i])) {
-        cows += 1;
-        return obj.cows = cows;
-      } else if (secret[i] === input[i]) {
-        bulls += 1;
-        return obj.bulls = bulls;
-      }
-    }
-
-    attempts.push(obj);
     setQuery('');
-
-    return { obj };
-  };
+  }
 
   return (
     <div className="App">
@@ -99,7 +100,7 @@ export const App = () => {
       >
         Give Up!
       </button>
-      {attempts && (
+      <div className='table_container'>
         <table>
           <thead>
             <tr>
@@ -124,7 +125,7 @@ export const App = () => {
             ))}
           </tbody>
         </table>
-      )}
+      </div>
     </div>
   );
 }
