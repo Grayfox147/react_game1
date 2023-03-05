@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import 'bulma/css/bulma.css';
 import './App.css';
 import { TableObject } from './Types/TableObject';
 import { digits, Message } from './utils/utils';
@@ -85,8 +86,8 @@ export const App = () => {
 
   return (
     <div className="App">
-      <h1>Bulls and Cows</h1>
-      <h2>Instructions</h2>
+      <h1 className="title">Bulls and Cows</h1>
+      <h2 className="subtitle">Instructions</h2>
       <p>1. Every digit should be different.</p>
       <p>2. Only numbers, no letters.</p>
       <p>3. the input must be 4 digits only.</p>
@@ -96,7 +97,7 @@ export const App = () => {
       }} >
         <input
           type="text"
-          className='input'
+          className="input is-small"
           value={query}
           onChange={(event) => {
             setQuery(event.target.value);
@@ -105,13 +106,13 @@ export const App = () => {
         />
       </form>
       <button
-        className='button'
+        className="button is-success"
         onClick={handlerGoButton}
       >
         Go!
       </button>
       <button
-        className='button'
+        className="button is-warning"
       >
         Give Up!
       </button>
@@ -141,6 +142,11 @@ export const App = () => {
           </tbody>
         </table>
       </div>
+      <img
+        src="https://simkl.in/episodes/25/2571028ebaf098bf2_w.jpg"
+        className="cowPic"
+        alt="Cow"
+      />
     </div>
   );
 }
