@@ -1,5 +1,6 @@
 .App {
   padding: 30px;
+  text-align: center;
 }
 .input {
   width: 25%;
@@ -7,4 +8,9 @@
 
 .cowPic {
   width: 25%;
+}
+
+.table {
+  text-align: center;
+  display: inline-block;
 }

@@ -11,10 +11,10 @@ export const App = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    inputRef.current?.focus();
     const baseGenerator = digits.sort(() => Math.random() - 0.5);
     const generatedNumber = baseGenerator.slice(0, 4).join('').split('');
     setSecretNumber(generatedNumber)
-    inputRef.current?.focus()
   }, [startAgain]);
 
   const attempts: TableObject[] = [];
