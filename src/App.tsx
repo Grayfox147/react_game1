@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import 'bulma/css/bulma.css';
 import './App.css';
 import { TableObject } from './Types/TableObject';
@@ -8,11 +8,13 @@ export const App = () => {
   const [query, setQuery] = useState('');
   const [secretNumber, setSecretNumber] = useState<string[]>([]);
   const [startAgain, setStartAgain] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const baseGenerator = digits.sort(() => Math.random() - 0.5);
     const generatedNumber = baseGenerator.slice(0, 4).join('').split('');
     setSecretNumber(generatedNumber)
+    inputRef.current?.focus()
   }, [startAgain]);
 
   const attempts: TableObject[] = [];
@@ -103,6 +105,7 @@ export const App = () => {
             setQuery(event.target.value);
           }}
           maxLength={4}
+          ref={inputRef}
         />
       </form>
       <button
@@ -116,8 +119,8 @@ export const App = () => {
       >
         Give Up!
       </button>
-      <div className='table_container'>
-        <table>
+      <div>
+        <table className="table">
           <thead>
             <tr>
               <th>Input</th>
