@@ -58,9 +58,8 @@ export const App = () => {
       if (n[i] === n[i + 1]) {
         return false;
       }
-
-      return true;
     }
+    return true;
   }
 
   const handlerGoButton = () => {
@@ -129,30 +128,32 @@ export const App = () => {
         Give Up!
       </button>
       <div>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Input</th>
-              <th>Bulls</th>
-              <th>Cows</th>
-            </tr>
-          </thead>
-          <tbody>
-            {attempts.map((attempt) => (
-              <tr>
-                <td>
-                  {attempt.input}
-                </td>
-                <td>
-                  {attempt.bulls}
-                </td>
-                <td>
-                  {attempt.cows}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          {attempts.length !== 0 && (
+                <table className="table">
+                <thead>
+                  <tr>
+                    <th>Input</th>
+                    <th>Bulls</th>
+                    <th>Cows</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {attempts.map((attempt) => (
+                    <tr>
+                      <td>
+                        {attempt.input}
+                      </td>
+                      <td>
+                        {attempt.bulls}
+                      </td>
+                      <td>
+                        {attempt.cows}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+          )}
       </div>
       <img
         src="https://simkl.in/episodes/25/2571028ebaf098bf2_w.jpg"
