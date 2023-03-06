@@ -44,6 +44,12 @@ export const App = () => {
 
     setAttempts([...attempts, obj]);
 
+    if (attempts.length === 7) {
+      setStartAgain((state) => !state);
+      setQuery('');
+      return alert(Message.LOOSEMESSAGE)
+    }
+
     return attempts;
   };
 
@@ -79,13 +85,21 @@ export const App = () => {
     setQuery('');
   }
 
+  const handleGiveUp = (secretNumber: string[]) => {
+    const number = +(secretNumber.join(''));
+    setQuery('');
+   alert(`You gave up, secret number was ${number}, try again!`)
+   setStartAgain((state) => !state);
+  }
+
   return (
     <div className="App">
       <h1 className="title">Bulls and Cows</h1>
       <h2 className="subtitle">Instructions</h2>
-      <p>1. Every digit should be different.</p>
-      <p>2. Only numbers, no letters.</p>
-      <p>3. the input must be 4 digits only.</p>
+      <p>Every digit should be different.</p>
+      <p>Only numbers, no letters.</p>
+      <p>the input must be 4 digits only.</p>
+      <p>you have 7 attempts, good luck!</p>
       <form onSubmit={(event) => {
         event.preventDefault();
         handlerGoButton();
@@ -109,6 +123,7 @@ export const App = () => {
       </button>
       <button
         className="button is-warning"
+        onClick={() => handleGiveUp(secretNumber)}
       >
         Give Up!
       </button>
