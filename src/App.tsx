@@ -8,6 +8,7 @@ export const App = () => {
   const [query, setQuery] = useState('');
   const [secretNumber, setSecretNumber] = useState<string[]>([]);
   const [startAgain, setStartAgain] = useState(false);
+  const [attempts, setAttempts] = useState<TableObject[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -17,11 +18,7 @@ export const App = () => {
     setSecretNumber(generatedNumber)
   }, [startAgain]);
 
-  const attempts: TableObject[] = [];
-
-  const handleComparisom = (secretNumber: string[], userInput: string) => {
-    let cows = 0;
-    let bulls = 0;
+  const handleComparison = (secretNumber: string[], userInput: string) => {
     const secret = secretNumber;
     const input = userInput.split('');
 
@@ -38,18 +35,14 @@ export const App = () => {
     }
 
     for (let i = 0; i < secret.length; i++) {
-      if (secret[i] !== input[i] && input.includes(secret[i])) {
-        cows++;
-        obj.cows = cows;
-      } else if (secret[i] === input[i]) {
-        bulls++;
-        obj.bulls = bulls;
+      if (secret[i] === input[i]) {
+        obj.bulls++;
+      } else if (input.includes(secret[i])) {
+        obj.cows++;
       }
-
-      return (obj);
     }
 
-    attempts.push(obj);
+    setAttempts([...attempts, obj]);
 
     return attempts;
   };
@@ -82,7 +75,7 @@ export const App = () => {
       return alert(Message.NOREPETITIONS);
     }
 
-    handleComparisom(secretNumber, userInput);
+    handleComparison(secretNumber, userInput);
     setQuery('');
   }
 
@@ -124,8 +117,8 @@ export const App = () => {
           <thead>
             <tr>
               <th>Input</th>
-              <th>Bull</th>
-              <th>Cow</th>
+              <th>Bulls</th>
+              <th>Cows</th>
             </tr>
           </thead>
           <tbody>
