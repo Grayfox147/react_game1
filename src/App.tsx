@@ -88,6 +88,7 @@ export const App = () => {
   const handleGiveUp = (secretNumber: string[]) => {
     const number = +(secretNumber.join(''));
     setQuery('');
+    setAttempts([]);
    alert(`You gave up, secret number was ${number}, try again!`)
    setStartAgain((state) => !state);
   }
