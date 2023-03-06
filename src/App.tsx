@@ -44,9 +44,10 @@ export const App = () => {
 
     setAttempts([...attempts, obj]);
 
-    if (attempts.length === 7) {
+    if (attempts.length === 10) {
       setStartAgain((state) => !state);
       setQuery('');
+      setAttempts([]);
       return alert(Message.LOOSEMESSAGE)
     }
 
@@ -99,7 +100,9 @@ export const App = () => {
       <p>Every digit should be different.</p>
       <p>Only numbers, no letters.</p>
       <p>the input must be 4 digits only.</p>
-      <p>you have 7 attempts, good luck!</p>
+      <p>you have 10 attempts, good luck!</p>
+      <p>Cow = good digit bad position</p>
+      <p>Bull = good digit good position</p>
       <form onSubmit={(event) => {
         event.preventDefault();
         handlerGoButton();

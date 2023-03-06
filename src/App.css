@@ -2,6 +2,12 @@
   padding: 30px;
   text-align: center;
 }
+
+.title {
+  color:darkturquoise;
+  text-decoration: solid;
+}
+
 .input {
   width: 25%;
   margin: 15px;
